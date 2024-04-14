@@ -1,0 +1,62 @@
+SLIP NO.11 
+Q1. 
+<!DOCTYPE html> 
+<html> 
+<head> 
+
+    <meta charset="utf-8"> 
+    <title>Student Name Input</title> 
+    <script type="text/javascript"> 
+      function handleInput() { 
+        var nameInput = document.getElementById("name-input"); 
+        var name = nameInput.value.trim(); 
+        if (name) { 
+          nameInput.style.color = "red"; 
+          nameInput.style.fontSize = "18px"; 
+        } else { 
+          var img = document.createElement("img"); 
+          img.onload = function() { 
+            img.style.width = "200px"; 
+          }; 
+          img.onmouseover = function() { 
+            img.style.width = "300px"; 
+          }; 
+          img.onmouseout = function() { 
+            img.style.width = "200px"; 
+          }; 
+          img.onmouseup = function() { 
+            alert("You clicked the image!"); 
+          }; 
+          img.src = "download.jpeg"; 
+          nameInput.parentNode.replaceChild(img, nameInput); 
+        } 
+      } 
+    </script> 
+  </head> 
+  <body> 
+    <input type="text" id="name-input" placeholder="Enter student name" onblur="handleInput()"> 
+  </body> 
+</html>
+2.
+
+from pandas import*
+from mlxtend.frequent_patterns import apriori, association_rules
+from mlxtend.preprocessing import TransactionEncoder
+transaction=[['butter','bread','milk'],
+             ['butter','flour','milk','sugar'],
+             ['butter','eggs','milk','salt'],
+             ['eggs'],
+             ['Bread','flour','milk','salt']]
+
+te=TransactionEncoder()
+arr=te.fit(transaction).transform(transaction)
+df=DataFrame(arr,columns=te.columns_)             
+print(df)
+
+freq_itemset=apriori(df,min_support=0.5,use_colnames=True)
+print("Frequent Itemsets:\n",freq_itemset)
+
+rules=association_rules(freq_itemset,metric='support',min_threshold=0.05)
+rules=rules.sort_values(['support','confidence'],ascending=[False,False])
+print("Association rules:\n",rules)
+

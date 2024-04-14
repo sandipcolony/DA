@@ -1,0 +1,48 @@
+SLIP NO.9 
+Q1. 
+<html> 
+<head> 
+<script type="text/javascript"> 
+function pasuser(form) { 
+if (form.id.value=="ty") {  
+if (form.pass.value=="bcs") {               
+alert("welcome Login successful"); 
+} else { 
+alert("Invalid Password") 
+} 
+} else {  alert("Invalid UserID") 
+} 
+} 
+</script> 
+</head> 
+<body> 
+<center> 
+<form name="login"> 
+Login Area <br> 
+UserID:<input name="id" type="text"><br><br> 
+
+Password:<input name="pass"type="password"><br> 
+<input type="button" value="Login"onClick="pasuser(this.form)"> 
+<input type="Reset"></form></center></body>
+
+2.
+ import pandas as pd
+from mlxtend.frequent_patterns import apriori, association_rules
+from mlxtend.preprocessing import TransactionEncoder
+transaction=[['Bread','Milk'],
+	     ['Bread','Diaper','Beer','Eggs'],
+	     ['Milk','Diaper','Beer','Coke'],
+	     ['Bread','Milk','Diaper','Beer'],
+	     ['Bread','Milk','Diaper','Coke']]
+
+te=TransactionEncoder()
+arr=te.fit(transaction).transform(transaction)
+df=pd.DataFrame(arr,columns=te.columns_)             
+print(df)
+
+freq_itemset=apriori(df,min_support=0.5,use_colnames=True)
+print("Frequent Itemsets:\n",freq_itemset)
+
+rules=association_rules(freq_itemset,metric='support',min_threshold=0.05)
+rules=rules.sort_values(['support','confidence'],ascending=[False,False])
+print("Association rules:\n",rules)

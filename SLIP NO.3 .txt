@@ -1,0 +1,80 @@
+SLIP NO.3 
+Q1. 
+HTML CODE 
+<html> 
+<body> 
+<form method="POST" action="o1.php"> 
+Enter UserName: 
+<input type="text" name="txt1" id="txt1"> 
+<br> 
+Enter Password:<input type="text" name="txt2" id="txt2"> 
+<br> 
+<input type="submit" value="login""> 
+</form> 
+</body> 
+</html> 
+PHP CODE 
+            <?php 
+session_start(); 
+ 
+if(!isset($_SESSION['count'])) 
+$_SESSION['count']=0; 
+$username=$_POST['txt1']; 
+$password=$_POST['txt2']; 
+ 
+            if($username==""&&$password=="") 
+              { 
+                    echo"Enter All Details"; 
+            } 
+ 
+            if($username=="ty"&&$password=="123456") 
+            { 
+                    echo"login Successfull"; 
+                    $_SESSION['count']=0; 
+            } 
+                        else  
+            {      
+                         $_SESSION['count']=$_SESSION['count']+1; 
+                       
+            if($_SESSION['count']>2) 
+            { 
+            echo ("You Exceeded the Limit...ie,3"); 
+            $_SESSION['count']=0; 
+             
+            } 
+            else 
+            { 
+        echo"Login Failed ... Wrong Details Entered... attempts made:". 
+$_SESSION['count']; 
+            include('a.html'); 
+            } 
+        } 
+ 
+ 
+ 
+?> 
+2.
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+import numpy as np
+df=pd.read_csv('Files/User_Data.csv')
+print(df)
+X = df[['Age', 'EstimatedSalary']]
+y = df['Purchased']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+model = LogisticRegression(random_state=25)
+model.fit(X_train_scaled, y_train)
+y_pred = model.predict(X_test_scaled)
+print('y prediction: ',y_pred)
+accuracy = accuracy_score(y_test, y_pred)
+print("Model Evaluation")
+print("Accuracy:", accuracy)
+
+

@@ -1,0 +1,75 @@
+SLIP NO.6 
+Q1. 
+<?xml version="1.0" ?> 
+ 
+<bookinfo> 
+<Book bid="b001"> 
+ 
+<bname>java</bname> 
+<author> abc </author> 
+<publication>Vision</publication> 
+<price>123</price> 
+</Book> 
+ 
+<Book bid="b002"> 
+ 
+<bname>PHP</bname> 
+<author> pqr </author> 
+<publication>Techmax</publication> 
+<price>250</price> 
+</Book> 
+ 
+<Book bid="b001"> 
+ 
+<bname>OS</bname> 
+<author> qqq </author> 
+<publication>Nirali</publication> 
+<price>127</price> 
+</Book> 
+</bookinfo> 
+ 
+ 
+PHP CODE 
+<?php 
+$xml=simplexml_load_file('book.xml') or die("can not load"); 
+echo"BOOK DETAILS<br>"; 
+echo"<table border='1'>"; 
+echo"<tr><th>bid</th><th>bname</th><th>author</th><th>publication</th><th>price</th></t
+ r>"; 
+foreach($xml->Book as $a) 
+{ 
+echo "<tr>"; 
+
+echo"<td>".$a['bid']."</td>"; 
+echo "<td>".$a->bname."</td>"; 
+echo "<td>".$a->author."</td>"; 
+echo "<td>".$a->publication."</td>"; 
+echo"<td>".$a->price."</td></tr>"; 
+} 
+echo"</table>"; 
+ 
+?>
+
+2.
+
+from pandas import*
+from mlxtend.frequent_patterns import apriori, association_rules
+from mlxtend.preprocessing import TransactionEncoder
+transaction=[['Bread','Milk'],
+             ['Bread','Diaper','Beer','Eggs'],
+             ['Milk','Diaper','Beer','Coke'],
+             ['Bread','Milk','Diaper','Beer'],
+             ['Bread','Milk','Diaper','Coke']]
+
+te=TransactionEncoder()
+arr=te.fit(transaction).transform(transaction)
+df=DataFrame(arr,columns=te.columns_)             
+print(df)
+
+freq_itemset=apriori(df,min_support=0.5,use_colnames=True)
+print("Frequent Itemsets:\n",freq_itemset)
+
+rules=association_rules(freq_itemset,metric='support',min_threshold=0.05)
+rules=rules.sort_values(['support','confidence'],ascending=[False,False])
+print("Association rules:\n",rules)
+

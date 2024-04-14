@@ -1,0 +1,71 @@
+SLIP NO.7 
+Q1. 
+HTML CODE 
+<?xml version="1.0"?> 
+<movieinfo> 
+  <movie no="101"> 
+  <title>Sooryavanshi</title> 
+  <actor>akshay kumar</actor> 
+  <ryear>2021</ryear> 
+  </movie> 
+<movie no="102"> 
+  <title>Simba</title> 
+  <actor>Ranbir Singh</actor> 
+  <ryear>2020</ryear> 
+  </movie> 
+<movie no="103"> 
+  <title>Bahubali</title> 
+  <actor>Prabhas</actor> 
+  <ryear>2018</ryear> 
+  </movie> 
+<movie no="104"> 
+  <title>Radhe</title> 
+  <actor>Salman Khan</actor> 
+  <ryear>2020</ryear> 
+  </movie> 
+</movieinfo> 
+    
+ 
+PHP CODE 
+<?php 
+$dom=new DomDocument(); 
+$dom->load("movie.xml"); 
+echo "<b>movies title</b><br>"; 
+$t=$dom->getElementsByTagName("title"); 
+foreach($t as $node) 
+{ 
+    print $node->textContent; 
+    echo "<br>"; 
+} 
+echo "<b>actor name</b><br>"; 
+$t1=$dom->getElementsByTagName("actor"); 
+foreach($t1 as $node) 
+{ 
+print $node->textContent; 
+echo "<br>"; 
+} 
+?>
+2.
+import pandas as pd
+from mlxtend.frequent_patterns import apriori,association_rules
+from mlxtend.preprocessing import TransactionEncoder
+df=pd.read_csv('Market_Basket_Optimisation.csv')
+df=df.sample(50)
+print(df)
+
+transactions=[]
+for i in range(0,len(df)):
+     transactions.append([str(df.values[i,j])for j in range(0,len(df.columns)) if (str(df.values[i,j])!='nan')])
+     
+te=TransactionEncoder()
+te_array=te.fit(transactions).transform(transactions)
+dfe=pd.DataFrame(te_array,columns=te.columns_)
+print(dfe)
+
+freq_items=apriori(dfe,min_support=0.005,use_colnames=True)
+print(freq_items)
+
+rules=association_rules(freq_items,metric='support',min_threshold=0.005)
+rules=rules.sort_values(['support','confidence'])
+print(rules)
+

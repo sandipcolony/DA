@@ -1,0 +1,124 @@
+SLIP NO.16 
+Q1. 
+<?xml version="1.0" encoding="UTF-8"?> 
+<library> 
+  <book> 
+    <title>Harry Potter and the Philosopher's Stone</title> 
+    <author>J.K. Rowling</author> 
+    <year>1997</year> 
+    <price>10.99</price> 
+  </book> 
+  <book> 
+    <title>The Hobbit</title> 
+    <author>J.R.R. Tolkien</author> 
+    <year>1937</year> 
+    <price>8.99</price> 
+  </book> 
+  <book> 
+    <title>To Kill a Mockingbird</title> 
+    <author>Harper Lee</author> 
+    <year>1960</year> 
+    <price>12.99</price> 
+  </book> 
+</library> 
+ 
+HTML 2 
+<!DOCTYPE html> 
+<html> 
+<head> 
+ <title>Book Details</title> 
+ <script src="jquery.js"></script> 
+ <script type="text/javascript"> 
+  $(document).ready(function(){ 
+   $('#bookSelect').change(function(){ 
+    var selectedBook = $(this).val(); 
+    $.ajax({ 
+
+     type: "GET", 
+     url: "books.xml", 
+     dataType: "xml", 
+    success: function(xml) 
+                                                    { 
+    $(xml).find('book').each(function() 
+                                                       { 
+    var title = $(this).find('title').text(); 
+                  if(title === selectedBook) 
+                                                                     { 
+    var author = $(this).find('author').text(); 
+    var year = $(this).find('year').text(); 
+    var price = $(this).find('price').text(); 
+    var details = "Author: " + author + "<br>Year: " + year + "<br>Price: $" + price; 
+    $('#bookDetails').html(details); 
+       } 
+      }); 
+     } 
+    }); 
+   }); 
+  }); 
+ </script> 
+</head> 
+<body> 
+ <h1>Book Details</h1> 
+ <select id="bookSelect"> 
+  <option value="">--Select a Book--</option> 
+  <option value="Harry Potter and the Philosopher's Stone">Harry Potter and the Philosopher's 
+Stone</option> 
+  <option value="The Hobbit">The Hobbit</option> 
+  <option value="To Kill a Mockingbird">To Kill a Mockingbird</option> 
+ </select> 
+ <div id="bookDetails"></div> 
+</body> 
+</html> 
+2.
+ 
+import nltk
+import re
+from nltk.corpus import stopwords
+from nltk.tokenize  import word_tokenize,sent_tokenize
+
+text="Text semmerisation is an #nlp technique that extract45 text from a large amount of data.It is the process of identifying the most meanigful information in a document and compressing it into a shorter version by preserving its meaning.@$ Types 12 :Extractive Text Summerisation"
+print("\nOriginal Text : ")
+print(text)
+print("\n")
+text=re.sub(r'[[0-9]*]', ' ', text)
+text=re.sub(r'[[0-9]{}*]',' ', text)
+ft=re.sub('[^a-zA-Z]', ' ' ,text)
+
+print("\n Text after removing Special character,symbols and digits are : ")
+print(ft)
+print("\n")
+sw=set(stopwords.words("english"))
+print("\n Stopwords..... \n")
+print(sw)
+wd=word_tokenize(ft)
+print("\n Word Tokens..... \n")
+print(wd)
+print("\n Extractive Text Summery \n ")
+
+wordfreq = {}
+for word in wd:
+  if word in sw:
+      continue
+  if word in wordfreq:
+     wordfreq[word] += 1
+  else:
+    wordfreq[word] = 1
+
+maximum_frequency = max(wordfreq.values())
+for word in wordfreq.keys():
+    wordfreq[word] = (wordfreq[word]/maximum_frequency)
+
+sentences = sent_tokenize(ft)
+sentenceValue = {}
+for sentence in sentences:
+   for word, freq in wordfreq.items():
+       if word in sentence.lower():
+          if sentence in sentenceValue:
+               sentenceValue[sentence] += freq
+          else:
+              sentenceValue[sentence] = freq
+import heapq
+summary = ''
+summary_sentences = heapq.nlargest(4, sentenceValue, key=sentenceValue.get)
+summary = ' '.join(summary_sentences)
+print(summary)
